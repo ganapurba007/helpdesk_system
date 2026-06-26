@@ -8,7 +8,7 @@ function toggleMobile() {
 </script>
 
 <template>
-  <header class="bg-white dark:bg-gray-900">
+  <header class="bg-white dark:bg-gray-900 sticky top-0 z-50">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-16 items-center justify-between">
         <div class="flex-1 md:flex md:items-center md:gap-12">
@@ -32,57 +32,32 @@ function toggleMobile() {
             <ul class="flex items-center gap-6 text-sm">
               <li>
                 <RouterLink
-                  to="about"
+                  :to="{ name: 'home' }"
                   active-class="text-teal-900 bg-teal-100 shadow-sm ring-1 ring-teal-200 rounded-full px-3 py-1 font-semibold dark:text-white dark:bg-teal-500/15 dark:ring-teal-400/30"
                   class="text-gray-500 transition hover:text-gray-700 dark:text-white dark:hover:text-teal-200"
                 >
-                  About
+                  Home
                 </RouterLink>
               </li>
 
               <li>
-                <a
+                <RouterLink
+                  :to="{ name: 'tickets' }"
+                  active-class="text-teal-900 bg-teal-100 shadow-sm ring-1 ring-teal-200 rounded-full px-3 py-1 font-semibold dark:text-white dark:bg-teal-500/15 dark:ring-teal-400/30"
                   class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                  href="#"
                 >
-                  Careers
-                </a>
+                  Tickets
+                </RouterLink>
               </li>
 
               <li>
-                <a
+                <RouterLink
+                  :to="{ name: 'profile' }"
+                  active-class="text-teal-900 bg-teal-100 shadow-sm ring-1 ring-teal-200 rounded-full px-3 py-1 font-semibold dark:text-white dark:bg-teal-500/15 dark:ring-teal-400/30"
                   class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                  href="#"
                 >
-                  History
-                </a>
-              </li>
-
-              <li>
-                <a
-                  class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                  href="#"
-                >
-                  Services
-                </a>
-              </li>
-
-              <li>
-                <a
-                  class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                  href="#"
-                >
-                  Projects
-                </a>
-              </li>
-
-              <li>
-                <a
-                  class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                  href="#"
-                >
-                  Blog
-                </a>
+                  Profile
+                </RouterLink>
               </li>
             </ul>
           </nav>
@@ -90,7 +65,7 @@ function toggleMobile() {
           <div class="flex items-center gap-4">
             <div class="sm:flex sm:gap-4">
               <RouterLink
-                to="login"
+                :to="{ name: 'login' }"
                 class="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm dark:hover:bg-teal-500"
               >
                 Login
@@ -98,7 +73,7 @@ function toggleMobile() {
 
               <div class="hidden sm:flex">
                 <RouterLink
-                  to="register"
+                  :to="{ name: 'register' }"
                   class="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
                 >
                   Register
@@ -140,58 +115,38 @@ function toggleMobile() {
           >
             <li>
               <RouterLink
-                to="about"
+                :to="{ name: 'home' }"
                 active-class="text-teal-900 bg-teal-100 shadow-sm ring-1 ring-teal-200 rounded-full px-3 py-1 font-semibold dark:text-white dark:bg-teal-500/15 dark:ring-teal-400/30"
                 class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                >About</RouterLink
+                >Home</RouterLink
               >
             </li>
             <li>
-              <a
+              <RouterLink
+                :to="{ name: 'tickets' }"
+                active-class="text-teal-900 bg-teal-100 shadow-sm ring-1 ring-teal-200 rounded-full px-3 py-1 font-semibold dark:text-white dark:bg-teal-500/15 dark:ring-teal-400/30"
                 class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                href="#"
-                >Careers</a
+                >Tickets</RouterLink
               >
             </li>
             <li>
-              <a
+              <RouterLink
+                :to="{ name: 'profile' }"
+                active-class="text-teal-900 bg-teal-100 shadow-sm ring-1 ring-teal-200 rounded-full px-3 py-1 font-semibold dark:text-white dark:bg-teal-500/15 dark:ring-teal-400/30"
                 class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                href="#"
-                >History</a
+                >Profile</RouterLink
               >
             </li>
-            <li>
-              <a
-                class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                href="#"
-                >Services</a
-              >
-            </li>
-            <li>
-              <a
-                class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                href="#"
-                >Projects</a
-              >
-            </li>
-            <li>
-              <a
-                class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                href="#"
-                >Blog</a
-              >
-            </li>
-
             <li class="pt-2">
               <RouterLink
-                to="login"
+                :to="{ name: 'login' }"
                 class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white text-center"
                 >Login</RouterLink
               >
             </li>
             <li>
               <RouterLink
-                to="register"
+                :to="{ name: 'register' }"
                 class="block rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 text-center dark:bg-gray-800 dark:text-white"
                 >Register</RouterLink
               >

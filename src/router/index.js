@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/HomeView.vue";
-import About from "../views/AboutView.vue";
+import Tickets from "../views/TicketsView.vue";
+import TicketCreate from "../views/TicketCreateView.vue";
+import TicketDetail from "../views/TicketDetailView.vue";
+import Profile from "../views/ProfileView.vue";
 import Login from "../views/LoginView.vue";
 import Register from "../views/RegisterView.vue";
 import Forgot from "../views/ForgotView.vue";
@@ -13,9 +16,29 @@ const route = [
     component: Home,
   },
   {
-    path: "/about",
-    name: "about",
-    component: About,
+    path: "/home",
+    redirect: { name: "home" },
+  },
+  {
+    path: "/tickets",
+    name: "tickets",
+    component: Tickets,
+  },
+  {
+    path: "/tickets/create",
+    name: "ticket_create",
+    component: TicketCreate,
+  },
+  {
+    path: "/tickets/:id",
+    name: "ticket_detail",
+    component: TicketDetail,
+    props: true,
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    component: Profile,
   },
   {
     path: "/login",
