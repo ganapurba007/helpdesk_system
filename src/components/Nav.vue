@@ -33,7 +33,8 @@ function toggleMobile() {
               <li>
                 <RouterLink
                   to="about"
-                  class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+                  active-class="text-teal-900 bg-teal-100 shadow-sm ring-1 ring-teal-200 rounded-full px-3 py-1 font-semibold dark:text-white dark:bg-teal-500/15 dark:ring-teal-400/30"
+                  class="text-gray-500 transition hover:text-gray-700 dark:text-white dark:hover:text-teal-200"
                 >
                   About
                 </RouterLink>
@@ -96,12 +97,12 @@ function toggleMobile() {
               </RouterLink>
 
               <div class="hidden sm:flex">
-                <a
+                <RouterLink
+                  to="register"
                   class="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
-                  href="#"
                 >
                   Register
-                </a>
+                </RouterLink>
               </div>
             </div>
 
@@ -140,6 +141,7 @@ function toggleMobile() {
             <li>
               <RouterLink
                 to="about"
+                active-class="text-teal-900 bg-teal-100 shadow-sm ring-1 ring-teal-200 rounded-full px-3 py-1 font-semibold dark:text-white dark:bg-teal-500/15 dark:ring-teal-400/30"
                 class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
                 >About</RouterLink
               >
@@ -188,10 +190,10 @@ function toggleMobile() {
               >
             </li>
             <li>
-              <a
+              <RouterLink
+                to="register"
                 class="block rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 text-center dark:bg-gray-800 dark:text-white"
-                href="#"
-                >Register</a
+                >Register</RouterLink
               >
             </li>
           </ul>
