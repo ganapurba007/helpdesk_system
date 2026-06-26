@@ -3,6 +3,8 @@ import Home from "../views/HomeView.vue";
 import Tickets from "../views/TicketsView.vue";
 import TicketCreate from "../views/TicketCreateView.vue";
 import TicketDetail from "../views/TicketDetailView.vue";
+import TicketEdit from "../views/TicketEditView.vue";
+import Unauthorized from "../views/UnauthorizedView.vue";
 import Profile from "../views/ProfileView.vue";
 import Login from "../views/LoginView.vue";
 import Register from "../views/RegisterView.vue";
@@ -34,6 +36,17 @@ const route = [
     name: "ticket_detail",
     component: TicketDetail,
     props: true,
+  },
+  {
+    path: "/tickets/:id/edit",
+    name: "ticket_edit",
+    component: TicketEdit,
+    props: true,
+  },
+  {
+    path: "/unauthorized",
+    name: "unauthorized",
+    component: Unauthorized,
   },
   {
     path: "/profile",
