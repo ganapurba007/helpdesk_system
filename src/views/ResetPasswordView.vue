@@ -1,9 +1,10 @@
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import api from "../service/api.js";
 
 const router = useRouter();
+const route = useRoute();
 
 const password = ref("");
 const passwordConfirm = ref("");
@@ -12,6 +13,13 @@ const errorMessage = ref("");
 const successMessage = ref("");
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
+const email = ref("");
+const token = ref("");
+
+onMounted(() => {
+  email.value = route.query.email || "";
+  token.value = route.query.token || "";
+});
 
 const submitReset = async () => {
   errorMessage.value = "";
@@ -26,6 +34,8 @@ const submitReset = async () => {
 
   try {
     await api.post("/reset_password", {
+      email: email.value,
+      token: token.value,
       password: password.value,
       password_confirmation: passwordConfirm.value,
     });
