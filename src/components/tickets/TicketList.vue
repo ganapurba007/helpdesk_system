@@ -82,6 +82,12 @@ const emit = defineEmits(["request-delete"]);
                   >Detail</RouterLink
                 >
                 <RouterLink
+                  v-if="ticket.status !== 'Closed'"
+                  :to="{ name: 'ticket_reply', params: { id: ticket.id } }"
+                  class="inline-flex rounded-3xl bg-teal-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-teal-500"
+                  >Reply</RouterLink
+                >
+                <RouterLink
                   v-if="ticket.status === 'Open'"
                   :to="{ name: 'ticket_edit', params: { id: ticket.id } }"
                   class="inline-flex rounded-3xl border border-teal-600 bg-teal-50 px-4 py-2 text-xs font-semibold text-teal-700 transition hover:bg-teal-100"
@@ -90,7 +96,7 @@ const emit = defineEmits(["request-delete"]);
                 <button
                   v-if="ticket.status === 'Open'"
                   @click="$emit('request-delete', ticket)"
-                  class="inline-flex rounded-3xl border border-rose-600 bg-rose-50 px-4 py-2 text-xs font-semibold text-rose-700 transition hover:bg-rose-100"
+                  class="inline-flex rounded-3xl border border-rose-600 bg-rose-50 px-4 py-2 text-xs font-semibold text-rose-700 transition hover:bg-rose-100 cursor-pointer"
                 >
                   Delete
                 </button>
@@ -123,6 +129,12 @@ const emit = defineEmits(["request-delete"]);
               >Detail</RouterLink
             >
             <RouterLink
+              v-if="ticket.status !== 'Closed'"
+              :to="{ name: 'ticket_reply', params: { id: ticket.id } }"
+              class="inline-flex rounded-3xl bg-teal-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-teal-500"
+              >Reply</RouterLink
+            >
+            <RouterLink
               v-if="ticket.status === 'Open'"
               :to="{ name: 'ticket_edit', params: { id: ticket.id } }"
               class="inline-flex rounded-3xl border border-teal-600 bg-teal-50 px-4 py-2 text-xs font-semibold text-teal-700 transition hover:bg-teal-100"
@@ -131,7 +143,7 @@ const emit = defineEmits(["request-delete"]);
             <button
               v-if="ticket.status === 'Open'"
               @click="$emit('request-delete', ticket)"
-              class="inline-flex rounded-3xl border border-rose-600 bg-rose-50 px-4 py-2 text-xs font-semibold text-rose-700 transition hover:bg-rose-100"
+              class="inline-flex rounded-3xl border border-rose-600 bg-rose-50 px-4 py-2 text-xs font-semibold text-rose-700 transition hover:bg-rose-100 cursor-pointer"
             >
               Delete
             </button>

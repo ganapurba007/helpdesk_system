@@ -1,10 +1,11 @@
 <script setup>
-import { useRoute } from "vue-router";
+import { useRoute, RouterLink } from "vue-router";
+import { ref, onMounted } from "vue";
 
 const route = useRoute();
 const ticketId = route.params.id;
 
-const ticket = {
+const ticket = ref({
   id: ticketId,
   subject: "Cannot access account",
   department: "Customer Support",
@@ -13,7 +14,20 @@ const ticket = {
   createdAt: "Jun 25, 2026",
   requester: "Jane Doe",
   description: "I cannot log into the portal using my usual credentials.",
-};
+  attachments: [],
+});
+
+onMounted(() => {
+  try {
+    const raw = sessionStorage.getItem(`ticket_${ticketId}`);
+    if (raw) {
+      const stored = JSON.parse(raw);
+      ticket.value = { ...ticket.value, ...stored };
+    }
+  } catch (e) {
+    // ignore
+  }
+});
 
 const history = [
   {
@@ -76,11 +90,19 @@ const history = [
             request.
           </p>
         </div>
-        <RouterLink
-          :to="{ name: 'tickets' }"
-          class="inline-flex items-center justify-center rounded-3xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50 dark:border-slate-700/80 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
-          >Back to tickets</RouterLink
-        >
+        <div class="flex items-center gap-3">
+          <RouterLink
+            :to="{ name: 'tickets' }"
+            class="inline-flex items-center justify-center rounded-3xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50 dark:border-slate-700/80 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
+            >Back to tickets</RouterLink
+          >
+          <RouterLink
+            v-if="ticket.status !== 'Closed'"
+            :to="{ name: 'ticket_reply', params: { id: ticket.id } }"
+            class="inline-flex items-center justify-center rounded-3xl bg-teal-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-teal-500"
+            >Reply</RouterLink
+          >
+        </div>
       </div>
     </section>
 
@@ -154,6 +176,46 @@ const history = [
             >
               {{ ticket.description }}
             </p>
+            <div
+              v-if="ticket.attachments && ticket.attachments.length"
+              class="mt-4"
+            >
+              <p
+                class="text-sm font-semibold text-slate-600 dark:text-slate-400"
+              >
+                Attachments
+              </p>
+              <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                <div
+                  v-for="(att, i) in ticket.attachments"
+                  :key="att.name + i"
+                  class="rounded-md border p-3"
+                >
+                  <div
+                    v-if="att.type && att.type.startsWith('image/')"
+                    class="mb-2 overflow-hidden rounded"
+                  >
+                    <img
+                      :src="att.data"
+                      alt="attachment"
+                      class="h-36 w-full object-cover"
+                    />
+                  </div>
+                  <div class="text-sm font-medium">{{ att.name }}</div>
+                  <div class="text-xs text-slate-500">
+                    {{ Math.round(att.size / 1024) }} KB • {{ att.type }}
+                  </div>
+                  <div class="mt-2">
+                    <a
+                      :href="att.data"
+                      :download="att.name"
+                      class="text-xs text-teal-600"
+                      >Download</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

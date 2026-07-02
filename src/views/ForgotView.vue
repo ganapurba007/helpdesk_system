@@ -1,13 +1,41 @@
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import api from "../service/api.js";
+
+const router = useRouter();
 
 const email = ref("");
+const loading = ref(false);
+const errorMessage = ref("");
+const successMessage = ref("");
 
-function submitForgot(event) {
-  event.preventDefault();
-  // Add forgot password logic here
-  console.log("Forgot password request:", email.value);
-}
+const submitForgot = async () => {
+  errorMessage.value = "";
+  successMessage.value = "";
+  loading.value = true;
+
+  try {
+    await api.post("/forgot_password", {
+      email: email.value.trim(),
+    });
+
+    successMessage.value =
+      "If your email is registered, we sent reset instructions.";
+    email.value = "";
+  } catch (error) {
+    if (error.response?.status === 422) {
+      errorMessage.value = Object.values(error.response.data.errors)
+        .flat()
+        .join(", ");
+    } else {
+      errorMessage.value =
+        error.response?.data?.message ?? "Unable to send reset link";
+    }
+  } finally {
+    loading.value = false;
+  }
+};
 </script>
 
 <template>
@@ -30,7 +58,21 @@ function submitForgot(event) {
         </p>
       </div>
 
-      <form @submit="submitForgot" class="space-y-6">
+      <div
+        v-if="successMessage"
+        class="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-600"
+      >
+        {{ successMessage }}
+      </div>
+
+      <div
+        v-if="errorMessage"
+        class="mb-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-600"
+      >
+        {{ errorMessage }}
+      </div>
+
+      <form @submit.prevent="submitForgot" class="space-y-6">
         <div>
           <label
             for="email"
@@ -49,9 +91,10 @@ function submitForgot(event) {
 
         <button
           type="submit"
-          class="w-full rounded-2xl bg-teal-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+          :disabled="loading"
+          class="w-full rounded-2xl bg-teal-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-teal-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-600 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
         >
-          Send reset link
+          {{ loading ? "Sending..." : "Send reset link" }}
         </button>
       </form>
 

@@ -1,10 +1,33 @@
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { useRouter } from "vue-router";
+import api from "../service/api.js";
 
 const mobileOpen = ref(false);
+const router = useRouter();
+const token = ref(localStorage.getItem("token"));
+const isAuthenticated = computed(() => !!token.value);
+
 function toggleMobile() {
   mobileOpen.value = !mobileOpen.value;
 }
+
+async function logout() {
+  try {
+    await api.post("/logout");
+  } catch (error) {
+    console.warn("Logout request failed", error);
+  }
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  token.value = null;
+  window.dispatchEvent(new Event("auth-changed"));
+  router.push({ name: "login" });
+}
+
+window.addEventListener("auth-changed", () => {
+  token.value = localStorage.getItem("token");
+});
 </script>
 
 <template>
@@ -29,7 +52,7 @@ function toggleMobile() {
 
         <div class="md:flex md:items-center md:gap-12">
           <nav aria-label="Global" class="hidden md:block">
-            <ul class="flex items-center gap-6 text-sm">
+            <ul v-if="isAuthenticated" class="flex items-center gap-6 text-sm">
               <li>
                 <RouterLink
                   :to="{ name: 'home' }"
@@ -64,21 +87,31 @@ function toggleMobile() {
 
           <div class="flex items-center gap-4">
             <div class="sm:flex sm:gap-4">
-              <RouterLink
-                :to="{ name: 'login' }"
-                class="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm dark:hover:bg-teal-500"
-              >
-                Login
-              </RouterLink>
-
-              <div class="hidden sm:flex">
-                <RouterLink
-                  :to="{ name: 'register' }"
-                  class="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
+              <template v-if="isAuthenticated">
+                <button
+                  @click="logout"
+                  class="rounded-md bg-rose-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-rose-500 cursor-pointer"
                 >
-                  Register
+                  Logout
+                </button>
+              </template>
+              <template v-else>
+                <RouterLink
+                  :to="{ name: 'login' }"
+                  class="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm dark:hover:bg-teal-500"
+                >
+                  Login
                 </RouterLink>
-              </div>
+
+                <div class="hidden sm:flex">
+                  <RouterLink
+                    :to="{ name: 'register' }"
+                    class="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
+                  >
+                    Register
+                  </RouterLink>
+                </div>
+              </template>
             </div>
 
             <div class="block md:hidden">
@@ -137,20 +170,34 @@ function toggleMobile() {
                 >Profile</RouterLink
               >
             </li>
-            <li class="pt-2">
-              <RouterLink
-                :to="{ name: 'login' }"
-                class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white text-center"
-                >Login</RouterLink
-              >
-            </li>
-            <li>
-              <RouterLink
-                :to="{ name: 'register' }"
-                class="block rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 text-center dark:bg-gray-800 dark:text-white"
-                >Register</RouterLink
-              >
-            </li>
+            <template v-if="isAuthenticated">
+              <li class="pt-2">
+                <button
+                  @click="logout"
+                  class="block w-full rounded-md bg-rose-600 px-5 py-2.5 text-sm font-medium text-white text-center"
+                >
+                  Logout
+                </button>
+              </li>
+            </template>
+            <template v-else>
+              <li class="pt-2">
+                <RouterLink
+                  :to="{ name: 'login' }"
+                  class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white text-center"
+                >
+                  Login
+                </RouterLink>
+              </li>
+              <li>
+                <RouterLink
+                  :to="{ name: 'register' }"
+                  class="block rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 text-center dark:bg-gray-800 dark:text-white"
+                >
+                  Register
+                </RouterLink>
+              </li>
+            </template>
           </ul>
         </nav>
       </div>

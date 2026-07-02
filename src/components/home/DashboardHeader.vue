@@ -3,6 +3,8 @@ const props = defineProps({
   totalTickets: { type: Number, default: 0 },
   onTrack: { type: String, default: "82%" },
   resolvedToday: { type: Number, default: 0 },
+  user: { type: Object, default: () => ({}) },
+  percentage: { type: Number, default: 0 },
 });
 </script>
 
@@ -12,7 +14,7 @@ const props = defineProps({
       <p
         class="text-xs font-semibold uppercase tracking-[0.35em] text-teal-600 dark:text-teal-300"
       >
-        Welcome back
+        Welcome back, {{ props.user.name }}
       </p>
       <h1
         class="mt-4 text-4xl font-semibold text-slate-950 dark:text-white sm:text-5xl"
@@ -43,8 +45,8 @@ const props = defineProps({
       <div
         class="rounded-3xl bg-gradient-to-br from-teal-500 to-cyan-500 p-5 text-white shadow-lg shadow-teal-500/10"
       >
-        <p class="text-sm uppercase tracking-[0.25em]">On track</p>
-        <p class="mt-4 text-3xl font-semibold">{{ props.onTrack }}</p>
+        <p class="text-sm uppercase tracking-[0.25em]">Active Tickets</p>
+        <p class="mt-4 text-3xl font-semibold">{{ props.percentage }} %</p>
         <p class="mt-2 text-sm text-teal-100/90">Tickets moving smoothly.</p>
       </div>
 
